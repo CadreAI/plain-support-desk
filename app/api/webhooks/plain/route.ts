@@ -84,9 +84,11 @@ export async function POST(request: NextRequest) {
       console.log('Thread created payload:', JSON.stringify(payload, null, 2));
       
       const customer = payload.customer || payload.thread?.customer;
+      const thread = payload.thread || payload;
       
       // Extract email properly - it might be nested in email.email
       let customerEmail = 'Unknown';
+      let customerName = 'Unknown';
       if (customer) {
         if (typeof customer.email === 'string') {
           customerEmail = customer.email;
@@ -95,6 +97,21 @@ export async function POST(request: NextRequest) {
         } else if (customer.emailAddress) {
           customerEmail = customer.emailAddress;
         }
+        
+        customerName = customer.fullName || customer.name || customerEmail.split('@')[0];
+      }
+      
+      // Extract the first message content
+      let messageContent = 'No message content';
+      if (thread.firstMessage?.text) {
+        messageContent = thread.firstMessage.text;
+      } else if (thread.components?.[0]?.componentText?.text) {
+        messageContent = thread.components[0].componentText.text;
+      }
+      
+      // Truncate message if too long
+      if (messageContent.length > 200) {
+        messageContent = messageContent.substring(0, 200) + '...';
       }
       
       // Extract workspace ID from payload or use environment variable
@@ -104,7 +121,7 @@ export async function POST(request: NextRequest) {
         : undefined;
       
       await sendSlackNotification(
-        `🆕 *New Support Request*\nFrom: ${customerEmail}`,
+        `🆕 *New Support Request*\n👤 *From:* ${customerName} (${customerEmail})\n💬 *Message:*\n${messageContent}`,
         threadUrl
       );
     }
