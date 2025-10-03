@@ -80,8 +80,22 @@ export async function POST(request: NextRequest) {
 
     // Send Slack notification for new threads
     if (eventType === 'thread.thread_created') {
+      // Log the full payload to debug
+      console.log('Thread created payload:', JSON.stringify(payload, null, 2));
+      
       const customer = payload.customer || payload.thread?.customer;
-      const customerEmail = customer?.email || customer?.emailAddress || 'Unknown';
+      
+      // Extract email properly - it might be nested in email.email
+      let customerEmail = 'Unknown';
+      if (customer) {
+        if (typeof customer.email === 'string') {
+          customerEmail = customer.email;
+        } else if (customer.email?.email) {
+          customerEmail = customer.email.email;
+        } else if (customer.emailAddress) {
+          customerEmail = customer.emailAddress;
+        }
+      }
       
       // Extract workspace ID from payload or use environment variable
       const workspaceId = payload.workspaceId || payload.thread?.workspaceId || process.env.PLAIN_WORKSPACE_ID;
