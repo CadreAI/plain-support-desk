@@ -1,25 +1,35 @@
 import { PlainClient } from '@team-plain/typescript-sdk';
 
-let _plainClient: PlainClient | null = null;
-
-export function getPlainClient(): PlainClient {
+function createPlainClient(): PlainClient {
   if (!process.env.PLAIN_API_KEY) {
     throw new Error('PLAIN_API_KEY is not set in environment variables');
   }
 
-  if (!_plainClient) {
-    _plainClient = new PlainClient({
-      apiKey: process.env.PLAIN_API_KEY,
-    });
-  }
+  return new PlainClient({
+    apiKey: process.env.PLAIN_API_KEY,
+  });
+}
 
+// Singleton instance
+let _plainClient: PlainClient | null = null;
+
+export function getPlainClient(): PlainClient {
+  if (!_plainClient) {
+    _plainClient = createPlainClient();
+  }
   return _plainClient;
 }
 
-// For backward compatibility
-export const plainClient = new Proxy({} as PlainClient, {
-  get(_target, prop) {
-    return getPlainClient()[prop as keyof PlainClient];
+// For convenience in API routes
+export const plainClient = {
+  get upsertCustomer() {
+    return getPlainClient().upsertCustomer.bind(getPlainClient());
   },
-});
+  get createThread() {
+    return getPlainClient().createThread.bind(getPlainClient());
+  },
+  get getThread() {
+    return getPlainClient().getThread.bind(getPlainClient());
+  },
+};
 
