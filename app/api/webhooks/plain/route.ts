@@ -101,16 +101,35 @@ export async function POST(request: NextRequest) {
         customerName = customer.fullName || customer.name || customerEmail.split('@')[0];
       }
       
-      // Extract the first message content
+      // Extract the first message content - try multiple paths
       let messageContent = 'No message content';
+      
+      // Log what we have to debug
+      console.log('Thread structure keys:', Object.keys(thread));
+      console.log('Has firstMessage?', !!thread.firstMessage);
+      console.log('Has components?', !!thread.components);
+      
+      // Try all possible paths where the message might be
       if (thread.firstMessage?.text) {
         messageContent = thread.firstMessage.text;
+      } else if (thread.firstMessage?.textContent) {
+        messageContent = thread.firstMessage.textContent;
       } else if (thread.components?.[0]?.componentText?.text) {
         messageContent = thread.components[0].componentText.text;
+      } else if (thread.firstInboundMessage?.text) {
+        messageContent = thread.firstInboundMessage.text;
+      } else if (thread.previewText) {
+        messageContent = thread.previewText;
+      } else if (thread.title) {
+        messageContent = thread.title;
+      } else if (payload.message?.text) {
+        messageContent = payload.message.text;
       }
       
+      console.log('Extracted message:', messageContent);
+      
       // Truncate message if too long
-      if (messageContent.length > 200) {
+      if (messageContent && messageContent.length > 200) {
         messageContent = messageContent.substring(0, 200) + '...';
       }
       
