@@ -19,18 +19,18 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+    <main className="min-h-screen bg-black py-12 px-4">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
             Support Help Desk
           </h1>
-          <p className="text-gray-600">
-            Powered by Plain.com • Messages route to Slack • Instant webhook updates ⚡
+          <p className="text-gray-400 text-lg">
+            Instant Response System • Powered by Plain + Slack ⚡
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden">
           {!threadId ? (
             <SupportForm onThreadCreated={handleThreadCreated} />
           ) : (
@@ -42,26 +42,26 @@ export default function Home() {
           )}
         </div>
 
-        <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            How it works:
+        <div className="mt-8 bg-zinc-900 border border-zinc-800 rounded-xl p-8">
+          <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-wide">
+            How It Works
           </h2>
-          <ol className="space-y-2 text-gray-700">
+          <ol className="space-y-4">
             <li className="flex items-start">
-              <span className="font-bold text-indigo-600 mr-2">1.</span>
-              <span>Submit a support request using the form above</span>
+              <span className="font-bold text-yellow-500 text-xl mr-4 min-w-[2rem]">1.</span>
+              <span className="text-gray-300 text-lg">Submit your support request using the form above</span>
             </li>
             <li className="flex items-start">
-              <span className="font-bold text-indigo-600 mr-2">2.</span>
-              <span>Your message is sent to Plain and routed to Slack</span>
+              <span className="font-bold text-yellow-500 text-xl mr-4 min-w-[2rem]">2.</span>
+              <span className="text-gray-300 text-lg">Message instantly routes to our Slack support channel</span>
             </li>
             <li className="flex items-start">
-              <span className="font-bold text-indigo-600 mr-2">3.</span>
-              <span>Your support team can reply directly in Slack</span>
+              <span className="font-bold text-yellow-500 text-xl mr-4 min-w-[2rem]">3.</span>
+              <span className="text-gray-300 text-lg">Our team replies directly in Slack</span>
             </li>
             <li className="flex items-start">
-              <span className="font-bold text-indigo-600 mr-2">4.</span>
-              <span>Replies appear here INSTANTLY via webhooks (no polling!)</span>
+              <span className="font-bold text-yellow-500 text-xl mr-4 min-w-[2rem]">4.</span>
+              <span className="text-gray-300 text-lg">Replies appear here <span className="text-yellow-500 font-semibold">INSTANTLY</span> via webhooks</span>
             </li>
           </ol>
         </div>

@@ -109,37 +109,37 @@ export default function ConversationView({
 
   return (
     <div className="flex flex-col h-[600px]">
-      <div className="bg-indigo-600 text-white p-4 flex justify-between items-center">
+      <div className="bg-black border-b-2 border-yellow-500 text-white p-6 flex justify-between items-center">
         <div>
-          <h2 className="text-xl font-semibold">Your Support Request</h2>
-          <p className="text-indigo-100 text-sm">{customerEmail}</p>
+          <h2 className="text-2xl font-bold uppercase tracking-wide">Your Support Request</h2>
+          <p className="text-gray-400 text-sm mt-1">{customerEmail}</p>
         </div>
         <button
           onClick={onReset}
-          className="bg-white text-indigo-600 px-4 py-2 rounded-lg font-medium hover:bg-indigo-50 transition"
+          className="bg-yellow-500 text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-400 transition uppercase tracking-wide"
         >
           New Request
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+      <div className="flex-1 overflow-y-auto p-6 bg-zinc-950">
         {isLoading ? (
           <div className="flex items-center justify-center h-full">
-            <div className="text-gray-500">Loading messages...</div>
+            <div className="text-gray-400 text-lg">Loading messages...</div>
           </div>
         ) : error ? (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          <div className="bg-red-900/30 border-2 border-red-500 text-red-200 px-5 py-4 rounded-lg">
             {error}
           </div>
         ) : messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
-            <div className="text-gray-500 text-center">
-              <p className="text-lg font-medium mb-2">Request submitted!</p>
-              <p className="text-sm">
+            <div className="text-center">
+              <p className="text-2xl font-bold text-white mb-3">✓ Request Submitted!</p>
+              <p className="text-gray-400 text-lg">
                 Waiting for a reply from the support team...
               </p>
-              <p className="text-xs text-gray-400 mt-2">
-                (Polling for updates every 5 seconds)
+              <p className="text-gray-600 text-sm mt-3">
+                You'll be notified instantly when we respond
               </p>
             </div>
           </div>
@@ -153,22 +153,20 @@ export default function ConversationView({
                   className={`flex ${fromSupport ? 'justify-start' : 'justify-end'}`}
                 >
                   <div
-                    className={`max-w-[70%] rounded-2xl px-4 py-3 ${
+                    className={`max-w-[70%] rounded-xl px-5 py-4 ${
                       fromSupport
-                        ? 'bg-white border border-gray-200 text-gray-800'
-                        : 'bg-indigo-600 text-white'
+                        ? 'bg-zinc-800 border-2 border-zinc-700 text-gray-200'
+                        : 'bg-yellow-500 text-black'
                     }`}
                   >
-                    <div className="text-sm font-medium mb-1">
+                    <div className="text-xs font-bold mb-2 uppercase tracking-wider opacity-70">
                       {fromSupport ? 'Support Team' : 'You'}
                     </div>
-                    <div className="text-sm whitespace-pre-wrap">
+                    <div className="text-base whitespace-pre-wrap">
                       {message.content}
                     </div>
                     <div
-                      className={`text-xs mt-2 ${
-                        fromSupport ? 'text-gray-400' : 'text-indigo-200'
-                      }`}
+                      className={`text-xs mt-2 opacity-60`}
                     >
                       {new Date(message.timestamp).toLocaleString()}
                     </div>
@@ -180,13 +178,13 @@ export default function ConversationView({
         )}
       </div>
 
-      <div className="bg-white border-t border-gray-200 p-4">
-        <div className="text-sm text-gray-600 flex items-center justify-center">
-          <span className={`inline-block w-2 h-2 rounded-full mr-2 ${
-            isConnected ? 'bg-green-500 animate-pulse' : 'bg-yellow-500'
+      <div className="bg-black border-t-2 border-zinc-800 p-5">
+        <div className="text-sm font-bold text-gray-300 flex items-center justify-center uppercase tracking-wider">
+          <span className={`inline-block w-2.5 h-2.5 rounded-full mr-3 ${
+            isConnected ? 'bg-yellow-500 animate-pulse' : 'bg-gray-600'
           }`}></span>
           {isConnected 
-            ? '⚡ Live connection active - replies appear instantly!' 
+            ? '⚡ Live Connection Active - Instant Replies' 
             : 'Connecting to real-time updates...'}
         </div>
       </div>

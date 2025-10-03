@@ -43,14 +43,14 @@ export default function SupportForm({ onThreadCreated }: SupportFormProps) {
   };
 
   return (
-    <div className="p-8">
-      <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-        How can we help you?
+    <div className="p-10">
+      <h2 className="text-3xl font-bold text-white mb-8 uppercase tracking-wide">
+        How Can We Help You?
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">
             Email Address *
           </label>
           <input
@@ -59,13 +59,13 @@ export default function SupportForm({ onThreadCreated }: SupportFormProps) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+            className="w-full px-5 py-4 bg-black border-2 border-zinc-700 text-white text-lg rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition placeholder-gray-600"
             placeholder="you@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="name" className="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">
             Name (optional)
           </label>
           <input
@@ -73,13 +73,13 @@ export default function SupportForm({ onThreadCreated }: SupportFormProps) {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+            className="w-full px-5 py-4 bg-black border-2 border-zinc-700 text-white text-lg rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition placeholder-gray-600"
             placeholder="John Doe"
           />
         </div>
 
         <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="message" className="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wider">
             Message *
           </label>
           <textarea
@@ -88,13 +88,13 @@ export default function SupportForm({ onThreadCreated }: SupportFormProps) {
             onChange={(e) => setMessage(e.target.value)}
             required
             rows={6}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition resize-none"
+            className="w-full px-5 py-4 bg-black border-2 border-zinc-700 text-white text-lg rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition resize-none placeholder-gray-600"
             placeholder="Describe your issue or question..."
           />
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          <div className="bg-red-900/30 border-2 border-red-500 text-red-200 px-5 py-4 rounded-lg">
             {error}
           </div>
         )}
@@ -102,7 +102,7 @@ export default function SupportForm({ onThreadCreated }: SupportFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-medium py-3 px-6 rounded-lg transition duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+          className="w-full bg-yellow-500 hover:bg-yellow-400 disabled:bg-yellow-700 disabled:text-gray-400 text-black font-bold py-5 px-6 rounded-lg transition duration-200 transform hover:scale-[1.02] active:scale-[0.98] text-lg uppercase tracking-wide"
         >
           {isSubmitting ? 'Submitting...' : 'Submit Support Request'}
         </button>

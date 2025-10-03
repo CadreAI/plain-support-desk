@@ -1,6 +1,56 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { eventEmitter } from '@/lib/event-emitter';
 
+async function sendSlackNotification(message: string, threadUrl?: string) {
+  if (!process.env.SLACK_WEBHOOK_URL) {
+    console.warn('SLACK_WEBHOOK_URL not configured, skipping Slack notification');
+    return;
+  }
+
+  try {
+    const payload = {
+      text: message,
+      blocks: threadUrl ? [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: message,
+          },
+        },
+        {
+          type: 'actions',
+          elements: [
+            {
+              type: 'button',
+              text: {
+                type: 'plain_text',
+                text: 'View in Plain',
+              },
+              url: threadUrl,
+              style: 'primary',
+            },
+          ],
+        },
+      ] : undefined,
+    };
+
+    const response = await fetch(process.env.SLACK_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      console.error('Failed to send Slack notification:', response.statusText);
+    } else {
+      console.log('✅ Slack notification sent');
+    }
+  } catch (error) {
+    console.error('Error sending Slack notification:', error);
+  }
+}
+
 // This webhook endpoint receives events from Plain when agents reply in Slack
 // Configure this in Plain: Settings > Webhooks
 // URL: https://your-domain.vercel.app/api/webhooks/plain
@@ -28,6 +78,18 @@ export async function POST(request: NextRequest) {
 
     console.log('Processing webhook:', { eventType, threadId });
 
+    // Send Slack notification for new threads
+    if (eventType === 'thread.thread_created') {
+      const customer = payload.customer || payload.thread?.customer;
+      const customerEmail = customer?.email || customer?.emailAddress || 'Unknown';
+      const threadUrl = threadId ? `https://app.plain.com/threads/${threadId}` : undefined;
+      
+      await sendSlackNotification(
+        `🆕 *New Support Request*\nFrom: ${customerEmail}`,
+        threadUrl
+      );
+    }
+
     // Emit real-time updates to connected SSE clients
     if (threadId) {
       eventEmitter.emit(`thread:${threadId}`, {
@@ -41,7 +103,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Handle specific event types
-    if (eventType === 'thread.reply_sent' || eventType === 'thread.message_sent') {
+    if (eventType === 'thread.slack_message_sent') {
       console.log('📨 New reply received - instant notification sent!');
     }
 
