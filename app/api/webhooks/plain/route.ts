@@ -82,7 +82,12 @@ export async function POST(request: NextRequest) {
     if (eventType === 'thread.thread_created') {
       const customer = payload.customer || payload.thread?.customer;
       const customerEmail = customer?.email || customer?.emailAddress || 'Unknown';
-      const threadUrl = threadId ? `https://app.plain.com/threads/${threadId}` : undefined;
+      
+      // Extract workspace ID from payload or use environment variable
+      const workspaceId = payload.workspaceId || payload.thread?.workspaceId || process.env.PLAIN_WORKSPACE_ID;
+      const threadUrl = threadId && workspaceId 
+        ? `https://app.plain.com/workspace/${workspaceId}/thread/${threadId}`
+        : undefined;
       
       await sendSlackNotification(
         `🆕 *New Support Request*\nFrom: ${customerEmail}`,
