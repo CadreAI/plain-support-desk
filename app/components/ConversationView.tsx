@@ -139,7 +139,7 @@ export default function ConversationView({
                 Waiting for a reply from the support team...
               </p>
               <p className="text-gray-600 text-sm mt-3">
-                You'll be notified instantly when we respond
+                You&apos;ll be notified instantly when we respond
               </p>
             </div>
           </div>
